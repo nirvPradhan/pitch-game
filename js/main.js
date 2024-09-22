@@ -5,6 +5,8 @@
  * */
 
 // note, frequency w/ a = 440 going up = 2x
+
+notesLetter = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 notes = [261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.00, 466.16, 493.88];
 
 //440hz = 440PI / seconds
@@ -21,20 +23,24 @@ function randomNote(){
 	return notes[(Math.floor(Math.random() * notes.length))];
 }
 
+function randomFreq() {
+	return Math.floor(Math.random() * 440) + 220;
+}
+
+let playNotes;
 /* fill buffer with notes */
 function fillBuffer(channels, samples, buffer){
-	
-	let noteChange = Math.floor(samples/3);
-	//let playNotes = [randomNote(), randomNote(), randomNote()];
-
-	let playNotes = [5, 11, 0];
-	console.log('playNotes = ', playNotes);
+	playNotes = [randomNote(), randomNote(), randomNote(), randomNote()];
+	let noteChange = Math.floor(samples/playNotes.length);
+	//playNotes = [5, 11, 0];
+	//playNotes = [randomFreq(), randomFreq(), randomFreq()];
+	//console.log('playNotes = ', playNotes);
 	let playNoteIndex;
 
 	for(let channel = 0; channel < channels; channel++){
 		const channelBuffer = buffer.getChannelData(channel);
 		
-		playNoteIndex = 0;
+		playNoteIndex = -1;
 
 		for(let sample = 0; sample < samples; sample++){
 			// input value b/w 1 and -1
@@ -42,10 +48,11 @@ function fillBuffer(channels, samples, buffer){
 			if(sample%noteChange == 0)playNoteIndex++;
 			//console.log(`${sample} % ${noteChange} = ${sample%noteChange}`);
 			//console.log(`playNoteIndex = ${playNoteIndex}`);
-			channelBuffer[sample] = generateAudioWave(sample, notes[playNoteIndex], audioCtx.sampleRate);
+			channelBuffer[sample] = generateAudioWave(sample, playNotes[playNoteIndex], audioCtx.sampleRate);
 		}
 	}
 }
+
 
 let audioCtx;
 let buffer;
@@ -86,5 +93,36 @@ function playMelody() {
 	};
 }
 
+function comparePitchString(pitchStr){
+	console.log("how long is the input str: ", pitchStr.length);
+	let succeded = true;
+	for(let i = 0; i < playNotes.length-1 && playNotes.length > 1; i++){
+		if (playNotes[i] > playNotes[i+1] && !(pitchStr[i] == 'D')){
+			succeded = false;	
+		}
+		else if(playNotes[i] < playNotes[i+1] && !(pitchStr[i] == 'U')){
+			succeded = false;	
+		}
+		else if(playNotes[i] == playNotes[i+1] && !(pitchStr[i] == '-')){
+			succeded = false;	
+		}
+	}
+	return succeded;
+}
+
+let pitchInputElement;
+function checkAnswer(){
+	if(!pitchInputElement){
+		pitchInputElement = document.getElementById("pitch");
+	}
+
+	let inputPitches = pitchInputElement.value;
+
+	console.log(comparePitchString(inputPitches));
+}
+
+function printAnswer(){
+	console.log('playNotes = ', playNotes);
+}
 
 
