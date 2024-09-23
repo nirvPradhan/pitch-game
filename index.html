@@ -10,18 +10,19 @@
 	<body>
 		<!-- start screen -->
 		<div id="start-screen">
-			<button id="start-button" onclick="playMelody()">Play Melody!</button>
-			<label for="pitch"> enter whether pitch goes up or down from previous (U - for up, D - for down IE. UDU)</label>
-			<input id="pitch" type="text"/>
-			<button id="enter" onclick="checkAnswer()">click to check answer!</button>
-			<button id="answer" onclick="printAnswer()">click to see answer!</button>
-
 		</div>
 
 		<!-- game screen -->
 		<div id="game-screen">
-			<div id="game-canvas"></div>
-			<div id="key-in"></div>
+			<div id="game-canvas">
+			</div>
+			<div id="key-in">
+				<button id="start-button" onclick="playMelody()">Play Melody!</button>
+				<label for="pitch"> enter whether pitch goes up or down from previous (U - for up, D - for down IE. UDU)</label>
+				<input id="pitch" type="text"/>
+				<button id="enter" onclick="checkAnswer()">click to check answer!</button>
+				<button id="answer" onclick="printAnswer()">click to see answer!</button>
+			</div>
 		</div>
 
 	</body>

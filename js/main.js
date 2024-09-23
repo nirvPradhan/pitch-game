@@ -58,7 +58,7 @@ let audioCtx;
 let buffer;
 const channels = 2;
 // number of seconds
-const lengthInSeconds = 10;
+const lengthInSeconds = 1.75;
 let length = lengthInSeconds;
 // Init audioCtx cuz needs to be done via user input
 function initAudioCtx(){
@@ -74,7 +74,9 @@ function initAudioCtx(){
 		sampleRate: audioCtx.sampleRate,
 	});
 
-	fillBuffer(channels, audioCtx.sampleRate, buffer);
+	console.log(length);
+
+	fillBuffer(channels,length, buffer);
 }
 
 function playMelody() {
